@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ded53f709eca1b4494758809b545a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motorForce: 1000
-  _breakForce: 3000
+  _motorForce: 700
+  _brakeForce: 1500
   _maxSteerAngle: 30
   _frontLeftWheelCollider: {fileID: 5296327409833739804}
   _frontRightWheelCollider: {fileID: 8640366981564205327}
@@ -110,6 +110,8 @@ MonoBehaviour:
   _frontRightWheelTransform: {fileID: 1036892592154690817}
   _rearLeftWheelTransform: {fileID: 8429602588091834494}
   _rearRightWheelTransform: {fileID: 6215132951440387535}
+  _brakeButton: {fileID: 0}
+  _uprightButton: {fileID: 0}
 --- !u!1 &1003593013973141282
 GameObject:
   m_ObjectHideFlags: 0
