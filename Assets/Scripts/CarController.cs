@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +37,7 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private Button _uprightButton;
 
-    [Header("Trail Renderer")]
+    [Header("Trail Renderers")]
     [SerializeField]
     private TrailRenderer[] _trailRenderers;
 
@@ -74,11 +71,11 @@ public class CarController : MonoBehaviour
         _frontLeftWheelCollider.motorTorque = _verticalInput * _motorForce;
         _frontRightWheelCollider.motorTorque = _verticalInput * _motorForce;
         _currentbrakeForce = _brakeInput ? _brakeForce : 0f;
-        ApplyBreaking();
+        ApplyBraking();
         HandleTrail();
     }
 
-    private void ApplyBreaking()
+    private void ApplyBraking()
     {
         _frontRightWheelCollider.brakeTorque = _currentbrakeForce;
         _frontLeftWheelCollider.brakeTorque = _currentbrakeForce;

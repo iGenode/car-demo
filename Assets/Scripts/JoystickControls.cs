@@ -8,7 +8,7 @@ public class JoystickControls : MonoBehaviour, IDragHandler, IPointerUpHandler, 
 
     private RectTransform _thumbTransform;
 
-    private const float DragThreshold = 0.6f;
+    private const float DragThreshold = 0.3f;
     private const float DragMovementDistance = 30;
     private const int DragOffsetDistance = 50;
 
