@@ -40,11 +40,16 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private Button _uprightButton;
 
+    [Header("Trail Renderer")]
+    [SerializeField]
+    private TrailRenderer[] _trailRenderers;
+
     private float _horizontalInput;
     private float _verticalInput;
     private float _currentSteerAngle;
     private float _currentbrakeForce;
     private bool _isBraking;
+    private bool _isEmitting = false;
 
     private void FixedUpdate()
     {
@@ -59,6 +64,7 @@ public class CarController : MonoBehaviour
         _frontRightWheelCollider.motorTorque = _verticalInput * _motorForce;
         _currentbrakeForce = _isBraking ? _brakeForce : 0f;
         ApplyBreaking();
+        HandleTrail();
     }
 
     private void ApplyBreaking()
@@ -89,6 +95,29 @@ public class CarController : MonoBehaviour
         wheelCollider.GetWorldPose(out Vector3 pos, out Quaternion rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
+    }
+
+    private void HandleTrail()
+    {
+        // TODO: check if wheel is grounded before emitting
+        // TODO: rotate the trail objects with wheels around Y axis to 
+        // TODO: calculate proper forces instead of just drawing when breaking
+        if (_currentbrakeForce != 0f && !_isEmitting)
+        {
+            foreach (TrailRenderer trailRenderer in _trailRenderers)
+            {
+                trailRenderer.emitting = true;
+            }
+            _isEmitting = true;
+        } 
+        else if (_currentbrakeForce == 0f && _isEmitting)
+        {
+            foreach (TrailRenderer trailRenderer in _trailRenderers)
+            {
+                trailRenderer.emitting = false;
+            }
+            _isEmitting = false;
+        }
     }
 
     private void UprightCar()
@@ -124,58 +153,3 @@ public class CarController : MonoBehaviour
         _uprightButton.onClick.RemoveListener(UprightCar);
     }
 }
-
-
-
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-
-//public class CarController : MonoBehaviour
-//{
-//    [SerializeField]
-//    private float _speed = 5.0f;
-//    [SerializeField]
-//    private float _turnSpeed = 10.0f;
-//    [SerializeField]
-//    private Transform _turningPoint;
-
-//    private Rigidbody _rigidbody;
-//    private float _moveVertical = 0.0f;
-//    //private Vector3 _moveHorizontal = default;
-//    private float _moveHorizontal = 0.0f;
-
-//    private void Awake()
-//    {
-//        _rigidbody = GetComponent<Rigidbody>();
-//    }
-
-//    // Update is called once per frame
-//    void Update()
-//    {
-//        _moveVertical = Input.GetAxis("Vertical");
-//        _moveHorizontal = Input.GetAxis("Horizontal");
-//        //if (_moveHorizontal != 0.0f)
-//        //{
-//        //    transform.Rotate(0.0f, _moveHorizontal * _turnSpeed * Time.deltaTime, 0.0f);
-//        //}
-//    }
-
-//    private void FixedUpdate()
-//    {
-//        if (_moveVertical != 0.0f)
-//        {
-//            _rigidbody.AddRelativeForce(0.0f, 0.0f, _moveVertical * _speed * Time.deltaTime, ForceMode.Force);
-//        }
-//        if (_rigidbody.velocity != default)
-//        {
-//            if (_moveHorizontal != 0.0f)
-//            {
-//                //Debug.Log($"Turning position is {_turningPoint.position}");
-//                //Debug.Log($"Force applied is {_moveHorizontal * _turnSpeed * Time.fixedDeltaTime * transform.right}");
-//                _rigidbody.AddForceAtPosition(_moveHorizontal * _turnSpeed * Time.fixedDeltaTime * transform.right, _turningPoint.position, ForceMode.Force);
-//            }
-//        }
-
-//    }
-//}
