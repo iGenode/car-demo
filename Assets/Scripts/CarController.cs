@@ -44,12 +44,21 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private TrailRenderer[] _trailRenderers;
 
+    public float CarSpeed { get; private set; }
+    public bool IsBraking { get; private set; }
+
     private float _horizontalInput;
     private float _verticalInput;
+    private bool _brakeInput;
     private float _currentSteerAngle;
     private float _currentbrakeForce;
-    private bool _isBraking;
     private bool _isEmitting = false;
+    private Rigidbody _rigidbody;
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
 
     private void FixedUpdate()
     {
@@ -60,9 +69,11 @@ public class CarController : MonoBehaviour
 
     private void HandleMotor()
     {
+        CarSpeed = _rigidbody.velocity.magnitude * 3.6f;
+
         _frontLeftWheelCollider.motorTorque = _verticalInput * _motorForce;
         _frontRightWheelCollider.motorTorque = _verticalInput * _motorForce;
-        _currentbrakeForce = _isBraking ? _brakeForce : 0f;
+        _currentbrakeForce = _brakeInput ? _brakeForce : 0f;
         ApplyBreaking();
         HandleTrail();
     }
@@ -101,22 +112,23 @@ public class CarController : MonoBehaviour
     {
         // TODO: check if wheel is grounded before emitting
         // TODO: rotate the trail objects with wheels around Y axis to 
-        // TODO: calculate proper forces instead of just drawing when breaking
-        if (_currentbrakeForce != 0f && !_isEmitting)
+        if (_currentbrakeForce != 0f && CarSpeed > 30 && !_isEmitting)
         {
             foreach (TrailRenderer trailRenderer in _trailRenderers)
             {
                 trailRenderer.emitting = true;
             }
             _isEmitting = true;
+            IsBraking = true;
         } 
-        else if (_currentbrakeForce == 0f && _isEmitting)
+        else if ((_currentbrakeForce == 0f || CarSpeed < 15) && _isEmitting)
         {
             foreach (TrailRenderer trailRenderer in _trailRenderers)
             {
                 trailRenderer.emitting = false;
             }
             _isEmitting = false;
+            IsBraking = false;
         }
     }
 
@@ -136,7 +148,7 @@ public class CarController : MonoBehaviour
 
     private void SetBrakingInput(bool input)
     {
-        _isBraking = input;
+        _brakeInput = input;
     }
 
     private void OnEnable()
