@@ -155,6 +155,7 @@ MonoBehaviour:
   - {fileID: 6524845352084962674}
   - {fileID: 906225879835776758}
   - {fileID: 6346579980134607040}
+  _centerOfMass: {x: 0, y: 0.3, z: -0.06}
 --- !u!114 &1170422325282883510
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarSoundManager : MonoBehaviour
@@ -20,6 +18,7 @@ public class CarSoundManager : MonoBehaviour
     {
         _enginePitch = _carController.CarSpeed / 50;
         _engineAudioSource.pitch = Mathf.Clamp(_enginePitch, _minPitch, _maxPitch);
+
         if (_carController.IsBraking && !_tiresAudioSource.isPlaying)
         {
             _tiresAudioSource.Play();

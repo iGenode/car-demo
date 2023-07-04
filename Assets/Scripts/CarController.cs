@@ -41,6 +41,10 @@ public class CarController : MonoBehaviour
     [SerializeField]
     private TrailRenderer[] _trailRenderers;
 
+    [Header("Center of mass")]
+    [SerializeField]
+    private Vector3 _centerOfMass;
+
     public float CarSpeed { get; private set; }
     public bool IsBraking { get; private set; }
 
@@ -55,6 +59,7 @@ public class CarController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.centerOfMass = _centerOfMass;
     }
 
     private void FixedUpdate()
